@@ -37,8 +37,8 @@ keyring==10.6.0
 keyrings.alt==3.0
 # language-selector==0.1
 Markdown==3.2.2
-MarkupSafe==1.0
-# netifaces==0.10.4
+# MarkupSafe==1.0
+netifaces==0.10.4
 oauthlib==2.0.6
 # PAM==0.4.2
 Pillow==7.1.1
