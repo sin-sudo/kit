@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'board' board.course.pk %}">{{ board.course.course_name }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'topic' board.course.pk board.pk %}">{{ board.name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New Topic</li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" novalidate>{% csrf_token %}
+  
+  {% include 'includes/form.html' %}
+  <input type="submit" class="btn btn-outline-primary mt-5" value="Post">
+</form>
+{% endblock %}

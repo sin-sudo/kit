@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+<form method="post" class="mb-4" novalidate>
+  {% csrf_token %}
+  {% include 'includes/form.html' %}
+  <input type="submit" class="btn btn-success" value="Save changes">
+  <a href="{% url 'topic_posts' post.topic.board.course.pk post.topic.board.pk post.topic.pk %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+</form>
+{% endblock %}

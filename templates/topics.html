@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'board' board.course.pk %}">{{ board.course.course_name }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ board.name}}</li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block content %}
+<a class="btn btn-outline-success mb-4" href="{% url 'new_topic' board.course.pk board.pk %}" role="button">New Topic</a>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">話題</th>
+      <th scope="col">starter</th>
+      <th scope="col">Replies</th>
+      <th scope="col">Views</th>
+      <th scope="col">Last Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for topic in topics %}
+    <tr>
+      <th scope="row"><a href="{% url 'topic_posts' topic.board.course.pk topic.board.pk topic.pk %}">{{ topic.subject }}</a></th>
+      <td>{{ topic.starter.username }}</td>
+      <td>{{ topic.replies }}</td>
+      <!-- このままだと同じユーザで何回も閲覧数が計算されてしまう -->
+      <td>{{ topic.views }}</td>
+      <td>{{ topic.last_updated|naturaltime }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Home</li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block content %}
+<ul class="list-group list-group-flush mb-4">
+  <li class="list-group-item"><strong>課程</strong></li>
+  {% for course in courses %}
+  <li class="list-group-item"><a href="{% url 'board' course.pk %}">{{ course.course_name }}</a></li>
+  {% endfor %}
+</ul>
+
+<div class="card">
+  <div class="card-header">
+    <span class="badge badge-pill badge-success">回答受付中の質問</span>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      {% for course in courses %}
+        <!-- course.boards.topicsのように三つ以上をつなげると何も表示されず、二つに抑えると問題なく表示された。 -->
+        {% for board in course.boards.all %}
+          {% for topic in board.topics.all %}
+          <li class="list-group-item"><a href="{% url 'topic_posts' topic.board.course.pk topic.board.pk topic.pk %}">{{ topic.subject }}</a></li>
+          {% endfor %}
+        {% endfor %}
+      {% endfor %}
+
+    </ul>
+  </div>
+</div>
+
+<div class="card mt-5 mb-4">
+  <div class="card-header">
+    <span class="badge badge-pill badge-info">質問箱カテゴリ</span>
+  </div>
+  <div class="card-body">
+    {% for course in courses %}
+    <h5 class="card-title"><a href="{% url 'board' course.pk %}">{{ course.course_name }}</a></h5>
+
+    <!-- forタグ入れるところ間違えてたからうまくフレックスボックスが適用されなかった。 -->
+    <div class="d-flex bd-highlight mb-3">
+      {% for board in course.boards.all %}
+      <div class="p-2 bd-highlight"><a href="{% url 'topic' board.course.pk board.pk %}">{{ board.name }}</a></div>
+      {% endfor %}
+    </div>
+  
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

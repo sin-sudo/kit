@@ -1,0 +1,39 @@
+<!-- ここから下の部分は今回のフォームに限らずどんなフォームにも利用できる（もちろんforms.pyを使うという条件付きで） -->
+{% load widget_tweaks %}
+
+<!-- 特定のフィールドに結びつかないエラーが返ってきている -->
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form %}
+
+{{ field.label_tag }}
+
+{% if form.is_bound %}
+  {% if field.errors %}
+    {% render_field field class="form-control is-invalid" %}
+    {% for error in field.errors %}
+    <div class="invalid-feedback">
+      {{ error }}
+    </div>
+    {% endfor %}
+  
+  {% else %}
+    {% render_field field class="form-control is-valid" %}
+  {% endif %}
+{% else %}
+  {% render_field field class="form-control" %}
+{% endif %}
+
+{% if field.help_text %}
+<small class="form-text text-muted">
+  {{ field.help_text }}
+</small>
+{% endif %}
+
+{% endfor %}

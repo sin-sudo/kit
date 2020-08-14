@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ course.course_name }}</li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">科目</th>
+      <!-- クエリセットAPIを使ってこれらの値を取得する -->
+      <th scope="col">Posts</th>
+      <th scope="col">Topics</th>
+      <th scope="col">Last Post</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for board in course.boards.all %}
+    <tr>
+      <th scope="row">
+        <a href="{% url 'topic' board.course.pk board.pk %}">{{ board.name }}</a><br>
+        <small>{{ board.description }}</small>
+      </th>
+      <td>{{ board.get_posts_count }}</td>
+      <!-- board.topics.countとして取り出すのもあり -->
+      <td>{{ board.get_topics_count }}</td>
+      <td>
+        <!-- なんかよくわからんけど余白開けたらあかん -->
+        {% with post=board.get_last_post %}
+          <small>
+            <!-- aタグで上手くリンクを張れない -->
+            {% if post %}
+            <p>
+              By {{ post.created_by.username }} at {{ post.created_at }}
+            </p>
+            {% else %}
+            <p>No post yet.</p>
+            {% endif %}
+          </small>
+        {% endwith %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
